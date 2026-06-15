@@ -3,9 +3,8 @@ import Products from "@/components/Products";
 import Stripe from "stripe";
 import type { StoreProduct, ProductPrice } from "@/types";
 
-const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY!)
-
 async function getProducts(): Promise<StoreProduct[]> {
+  const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY!)
   const products = await stripe.products.list({ active: true })
   const prices = await stripe.prices.list({ active: true })
 
