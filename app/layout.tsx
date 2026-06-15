@@ -4,6 +4,7 @@ import Head from "./head";
 import Link from "next/link";
 import Cart from "@/components/Cart";
 import EmailInput from "@/components/EmailInput";
+import Navbar from "@/components/Navbar";
 import ProductsProvider from "@/context/ProductContext";
 import { ReactNode } from "react";
 
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 </Link>
                 <h5 className="mid-text">-great things for great people-</h5>
                 <Cart />
+                <Navbar />
               </div>
             </header>
 
