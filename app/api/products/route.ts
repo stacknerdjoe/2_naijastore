@@ -1,9 +1,8 @@
 import Stripe from "stripe";
 import '../../../envConfig'
 
-const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY!)
-
 export async function GET() {
+  const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY!)
   try {
     const products = await stripe.products.list({ active: true })
     const prices = await stripe.prices.list({ active: true })
