@@ -1,53 +1,95 @@
-# 🎮 Game Sticker Store
+# Naijastore — Game Sticker E-Commerce Store
 
-A personal e-commerce store for buying game-themed stickers. Built as a portfolio project to showcase full-stack development with modern web technologies.
+[![CI](https://github.com/stacknerdjoe/nextjs-ecommerce-store/actions/workflows/ci.yml/badge.svg)](https://github.com/stacknerdjoe/nextjs-ecommerce-store/actions/workflows/ci.yml)
 
----
+A full-stack e-commerce platform for game-themed stickers, built with Next.js 16, TypeScript, Stripe, Auth.js and Supabase PostgreSQL. Designed as a production-grade portfolio project demonstrating modern web development practices.
 
-## 🖥️ Live Demo
-
- https://www.Naijastore.vercel.app_
+🔗 **Live Demo:** [naijastore.vercel.app](https://www.naijastore.vercel.app)
 
 ---
 
+## Features
 
-## ✨ Features
-
-- 🛍️ Browse and purchase game-themed stickers
-- 🛒 Shopping cart with real-time updates
-- 💳 Secure checkout powered by Stripe
-- 📦 Product listing and detail pages
-- 📱 Fully responsive design
+- **Product catalogue** — browse and purchase game-themed stickers with responsive product listings
+- **Shopping cart** — real-time cart updates with React Context
+- **Secure checkout** — Stripe-powered payment processing with SEK pricing
+- **Authentication** — email/password and Google OAuth via Auth.js with protected routes
+- **User dashboard** — order history, profile info, and session management
+- **CI/CD pipeline** — automated type checking, linting, and build validation on every push
+- **Type safe** — fully migrated to TypeScript across the entire codebase
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Technology | Purpose |
-|------------|---------|
-| [Next.js](https://nextjs.org/) | React framework (SSR + routing) |
-| [TypeScript](https://www.typescriptlang.org/) | Type-safe JavaScript |
-| [FantaCSS](https://fantacss.dev/) | Styling and UI components |
+|---|---|
+| [Next.js 16](https://nextjs.org/) | React framework — App Router, SSR, API routes |
+| [TypeScript](https://www.typescriptlang.org/) | Type-safe JavaScript across the full stack |
+| [Auth.js (NextAuth v5)](https://authjs.dev/) | Authentication — Google OAuth + credentials |
+| [Prisma](https://www.prisma.io/) | ORM for database access |
+| [Supabase](https://supabase.com/) | Hosted PostgreSQL database |
 | [Stripe](https://stripe.com/) | Payment processing |
+| [FantaCSS](https://fantacss.dev/) | Styling and UI components |
+| [GitHub Actions](https://github.com/features/actions) | CI pipeline — lint, type check, build |
 
 ---
 
-## 🚀 Getting Started
+## Project Structure
+
+```
+├── .github/workflows/
+│   └── ci.yml                  # GitHub Actions CI pipeline
+├── app/
+│   ├── api/
+│   │   ├── auth/               # Auth.js route handlers + register endpoint
+│   │   ├── checkout/route.ts   # POST — creates Stripe checkout session
+│   │   └── products/route.ts   # GET — fetches active Stripe products
+│   ├── auth/
+│   │   ├── login/page.tsx      # Login page (email/password + Google)
+│   │   └── register/page.tsx   # Registration page
+│   ├── cart/page.tsx           # Shopping cart
+│   ├── dashboard/page.tsx      # Protected user dashboard + order history
+│   ├── success/page.tsx        # Post-purchase confirmation
+│   └── layout.tsx              # Root layout
+├── components/
+│   ├── Navbar.tsx              # Auth-aware navbar (server component)
+│   ├── Cart.tsx                # Cart icon with item count
+│   ├── ImageBanner.tsx         # Hero banner
+│   └── Products.tsx            # Product listings
+├── context/
+│   └── ProductContext.tsx      # Cart state (React Context)
+├── lib/
+│   └── db.ts                   # Prisma client singleton
+├── prisma/
+│   └── schema.prisma           # Database schema (User, Order, Product)
+├── types/
+│   └── index.ts                # Shared TypeScript types
+├── auth.ts                     # Auth.js configuration
+├── middleware.ts               # Route protection middleware
+└── tsconfig.json               # TypeScript configuration
+```
+
+---
+
+## Getting Started
 
 ### Prerequisites
 
-- Node.js 18+
-- npm or yarn
-- A Stripe account (for payments)
+- Node.js 20+
+- npm
+- A Stripe account
+- A Supabase project (free tier works)
+- A Google Cloud project with OAuth credentials
 
 ### Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/your-repo-name.git
+git clone https://github.com/stacknerdjoe/nextjs-ecommerce-store.git
 
 # Navigate into the project
-cd your-repo-name
+cd nextjs-ecommerce-store
 
 # Install dependencies
 npm install
@@ -55,14 +97,34 @@ npm install
 
 ### Environment Variables
 
-Create a `.env.local` file in the root of the project and add the following:
+Create a `.env.local` file in the project root:
 
 ```env
+# Database — Supabase PostgreSQL
+DATABASE_URL=postgresql://postgres.[ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres?pgbouncer=true
+DIRECT_URL=postgresql://postgres.[ref]:[password]@aws-0-[region].pooler.supabase.com:5432/postgres
+
+# Auth.js — generate with: npx auth secret
+AUTH_SECRET=your_auth_secret
+
+# Google OAuth — console.cloud.google.com
+GOOGLE_CLIENT_ID=your_google_client_id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+
+# Stripe — dashboard.stripe.com
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
 STRIPE_SECRET_KEY=your_stripe_secret_key
 ```
 
-> ⚠️ Never commit your `.env.local` file. It is already listed in `.gitignore`.
+### Database Setup
+
+```bash
+# Generate Prisma client
+npx prisma generate
+
+# Push schema to Supabase
+npx prisma db push
+```
 
 ### Running Locally
 
@@ -74,59 +136,41 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 📁 Project Structure
+## Authentication
 
-```
-├── app/
-│   ├── api/
-│   │   ├── checkout/route.ts   # POST — creates Stripe checkout session
-│   │   └── products/route.ts   # GET — fetches active Stripe products
-│   ├── cart/page.tsx           # Shopping cart page
-│   ├── success/page.tsx        # Post-purchase confirmation page
-│   ├── error.tsx               # Error boundary
-│   ├── head.tsx                # Custom <head> (fonts, icons)
-│   ├── layout.tsx              # Root layout (header, footer, providers)
-│   ├── not-found.tsx           # 404 page
-│   ├── page.tsx                # Home page (SSR, fetches products)
-│   ├── globals.css             # Global styles
-│   └── fanta.css               # FantaCSS framework styles
-├── components/
-│   ├── Cart.tsx                # Cart icon with item count
-│   ├── EmailInput.tsx          # Newsletter signup input
-│   ├── ImageBanner.tsx         # Hero banner with progressive image load
-│   ├── Portal.tsx              # React portal for product image modals
-│   └── Products.tsx            # Planner + sticker product listings
-├── context/
-│   └── ProductContext.tsx      # Cart state (React Context)
-├── types/
-│   └── index.ts                # Shared TypeScript types
-├── public/
-│   ├── low_res/                # Low-resolution product images
-│   └── med_res/                # Medium-resolution product images
-├── declarations.d.ts           # CSS module type declarations
-├── envConfig.ts                # Loads .env for API routes
-├── next.config.mjs             # Next.js configuration
-└── tsconfig.json               # TypeScript configuration
-```
+The app supports two sign-in methods:
+
+- **Email + password** — users register at `/auth/register`, passwords are hashed with bcrypt
+- **Google OAuth** — one-click sign in via Google, requires redirect URI `http://localhost:3000/api/auth/callback/google` in your Google Cloud Console
+
+Protected routes (`/dashboard`, `/checkout`, `/orders`) are secured via Next.js middleware. Unauthenticated users are redirected to `/auth/login`.
 
 ---
 
-## 💳 Stripe Setup
+## Stripe Setup
 
-This project uses Stripe for payment processing. To test payments locally:
+Test payments locally using Stripe's test card:
 
-1. Use Stripe's test card: `4242 4242 4242 4242`
-2. Any future expiry date and any 3-digit CVC
-3. Check your [Stripe Dashboard](https://dashboard.stripe.com/) to verify test transactions
+- **Card number:** `4242 4242 4242 4242`
+- **Expiry:** any future date
+- **CVC:** any 3 digits
 
----
-
-## 🙋 About
-
-This is a personal portfolio project built to practice building a full-stack e-commerce app. Not intended for commercial use.
+Verify transactions in your [Stripe Dashboard](https://dashboard.stripe.com/).
 
 ---
 
-## 📄 License
+## CI Pipeline
 
-This project is for personal/portfolio use. Feel free to use it as inspiration for your own projects.
+Every push to `main` and every pull request automatically runs:
+
+1. `npx tsc --noEmit` — TypeScript type checking
+2. `npm run lint` — ESLint code quality checks
+3. `next build` — full production build validation
+
+Pipeline configuration: `.github/workflows/ci.yml`
+
+---
+
+## License
+
+This project is for personal and portfolio use. Feel free to use it as inspiration for your own projects.
