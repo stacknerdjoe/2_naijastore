@@ -77,11 +77,36 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ## 📁 Project Structure
 
 ```
-├── app/              # Next.js app directory (pages & layouts)
-├── components/       # Reusable UI components
-├── public/           # Static assets (images, icons)
-├── styles/           # Global styles
-└── lib/              # Utility functions (e.g. Stripe helpers)
+├── app/
+│   ├── api/
+│   │   ├── checkout/route.ts   # POST — creates Stripe checkout session
+│   │   └── products/route.ts   # GET — fetches active Stripe products
+│   ├── cart/page.tsx           # Shopping cart page
+│   ├── success/page.tsx        # Post-purchase confirmation page
+│   ├── error.tsx               # Error boundary
+│   ├── head.tsx                # Custom <head> (fonts, icons)
+│   ├── layout.tsx              # Root layout (header, footer, providers)
+│   ├── not-found.tsx           # 404 page
+│   ├── page.tsx                # Home page (SSR, fetches products)
+│   ├── globals.css             # Global styles
+│   └── fanta.css               # FantaCSS framework styles
+├── components/
+│   ├── Cart.tsx                # Cart icon with item count
+│   ├── EmailInput.tsx          # Newsletter signup input
+│   ├── ImageBanner.tsx         # Hero banner with progressive image load
+│   ├── Portal.tsx              # React portal for product image modals
+│   └── Products.tsx            # Planner + sticker product listings
+├── context/
+│   └── ProductContext.tsx      # Cart state (React Context)
+├── types/
+│   └── index.ts                # Shared TypeScript types
+├── public/
+│   ├── low_res/                # Low-resolution product images
+│   └── med_res/                # Medium-resolution product images
+├── declarations.d.ts           # CSS module type declarations
+├── envConfig.ts                # Loads .env for API routes
+├── next.config.mjs             # Next.js configuration
+└── tsconfig.json               # TypeScript configuration
 ```
 
 ---
