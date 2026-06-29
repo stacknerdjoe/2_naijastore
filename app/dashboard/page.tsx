@@ -20,7 +20,7 @@ export default async function DashboardPage() {
   })
 
   return (
-    <div className="dashboard">
+    <section className="dashboard">
       <h1>Dashboard</h1>
       <p className="dashboard-welcome">
         Welcome back, <strong>{session.user.name ?? session.user.email}</strong>
@@ -61,6 +61,6 @@ export default async function DashboardPage() {
           </ul>
         )}
       </section>
-    </div>
+    </section>
   )
 }
