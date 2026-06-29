@@ -62,7 +62,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               </div>
 
               <div className="socials">
-                <p>© <a href="https://www.JosephPortfolio.com" target="_blank">JosephPortfolio</a>2026 <br />built with NextJS & <a target="_blank" href="https://wwww.fantacss.smoljames.com">FantaCSS</a>
+                <p>© <a href="https://josefportfolio.netlify.app/" target="_blank">JosephPortfolio</a>2026 <br />built with NextJS & <a target="_blank" href="https://wwww.fantacss.smoljames.com">FantaCSS</a>
                 </p>
                 <div className="social-links">
                   <Link href={'https://github.com/stacknerdjoe'} target="_blank"><i className="fa-brands fa-github"></i></Link>
